@@ -6,9 +6,9 @@ from oauth2client.service_account import ServiceAccountCredentials
 import gspread
 import os
 
-######################
-## Google drive linking
 #######################
+## Google drive linking
+########################
 # new view only creds in shared Google Drive
 app_creds_dictionary = {
   "type": "service_account",
