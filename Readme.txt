@@ -10,7 +10,7 @@ Drag and drop the file to anywhere on your computer that you want to save it.
 To use:
 Open Warrant Search Program\Main
 Launch Main.exe to run the program.
-s
+
 Shortcut:
 Make a shortcut from Warrant Search "Program\Main\Main.exe"
 
