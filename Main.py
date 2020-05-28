@@ -263,12 +263,13 @@ def handle_click(event):
         return "break"
 searchResults.bind('<Button-1>', handle_click)
 
-# do later double click to open WNSapp(warrantID)
-# def OnDoubleClick(event):
-#     item = showWarrants.identify('item',event.x,event.y)
-#     print("you clicked on", self.tree.item(item,"text"))
-#
-# searchResults.bind("<Double-1>",OnDoubleClick)
+# double click to open full warrant info
+def OnDoubleClick(event):
+    citem = searchResults.focus()
+    warrantDetails = searchResults.item(citem,"values")
+    WNSapp(warrantDetails[0])
+
+searchResults.bind("<Double-1>",OnDoubleClick)
 
 refresh(False)
 main.mainloop()
