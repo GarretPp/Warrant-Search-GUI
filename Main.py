@@ -29,7 +29,15 @@ gc = gspread.authorize(creds)
 
 ws = gc.open_by_key("1vQkJ5C-zwRKselKz5_C2HPBezMKAP0EbWwWgnzEX9EY").sheet1
 ###################################################
-
+##
+##
+## Program Info
+## Warrant Search GUI
+## Created by Garret P. (#14308)
+##
+version = "0.2b"
+versionText = ("Created by Garret P. (#14308) | Version %s" % version)
+#############
 def refresh(buttonCheck):
     global WSstatus
     WSstatus = ws.col_values(1)
@@ -243,7 +251,11 @@ searchResults.column("Name",minwidth=0,width=130)
 searchResults.column("DOB",minwidth=0,width=60)
 searchResults.column("Charges",minwidth=0,width=200)
 searchResults.column("Department",minwidth=0,width=80)
-searchResults.grid(row=2,column=0,columnspan=5)
+searchResults.grid(row=2,column=0,columnspan=5,padx=6)
+
+#Label for ver and creds at bottom
+versionLabel = tk.Label(main, text=versionText, font=("Verdana", 8))
+versionLabel.grid(row=3,column=2,columnspan=3,sticky="e")
 
 #User cannot resize columns with this code
 def handle_click(event):
