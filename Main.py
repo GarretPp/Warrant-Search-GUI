@@ -202,11 +202,6 @@ def WNSapp(passWID):
 def onEnter(event=None):
     showWarrants()
 
-# def OnDoubleClick(event):
-#     item = showWarrants.identify('item',event.x,event.y)
-#     print("you clicked on", self.tree.item(item,"text"))
-
-
 main = tk.Tk()
 main.resizable(0,0)
 main.wm_title("Active Arrest Warrant Search")
@@ -250,6 +245,17 @@ searchResults.column("Charges",minwidth=0,width=200)
 searchResults.column("Department",minwidth=0,width=80)
 searchResults.grid(row=2,column=0,columnspan=5)
 
+#User cannot resize columns with this code
+def handle_click(event):
+    if searchResults.identify_region(event.x, event.y) == "separator":
+        return "break"
+searchResults.bind('<Button-1>', handle_click)
+
+# do later double click to open WNSapp(warrantID)
+# def OnDoubleClick(event):
+#     item = showWarrants.identify('item',event.x,event.y)
+#     print("you clicked on", self.tree.item(item,"text"))
+#
 # searchResults.bind("<Double-1>",OnDoubleClick)
 
 refresh(False)
