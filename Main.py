@@ -35,7 +35,7 @@ ws = gc.open_by_key("1vQkJ5C-zwRKselKz5_C2HPBezMKAP0EbWwWgnzEX9EY").sheet1
 ## Warrant Search GUI
 ## Created by Garret P. (#14308)
 ##
-version = "0.3b"
+version = "1.0"
 versionText = ("Created by Garret P. (#14308) | Version %s" % version)
 #############
 def refresh(buttonCheck):
@@ -108,9 +108,9 @@ def WNSapp(passWID):
         SHEdob.configure(state="normal")
         SHEdob.delete(0,tk.END)
         SHEcharges.configure(state="normal")
-        SHEcharges.delete(0,tk.END)
+        SHEcharges.delete(1.0,"end")
         SHEevidence.configure(state="normal")
-        SHEevidence.delete(0,tk.END)
+        SHEevidence.delete(1.0, "end")
 
         #do search here
         RWL = None
@@ -125,8 +125,8 @@ def WNSapp(passWID):
             SHEoocCiv.insert(10,WSoocCiv[RWL])
             SHEdob.insert(10,WSdob[RWL])
             varType.set("Warrant Type\n"+WStype[RWL])
-            SHEcharges.insert(10,WScharges[RWL])
-            SHEevidence.insert(10,WSevidence[RWL])
+            SHEcharges.insert(1.0,WScharges[RWL])
+            SHEevidence.insert(1.0,WSevidence[RWL])
             varStatus.set("WARRANT STATUS: "+WSstatus[RWL])
         else:
             varType.set("NO RESULT\nFOUND")
@@ -136,8 +136,8 @@ def WNSapp(passWID):
         SHEcivName.configure(state="readonly")
         SHEoocCiv.configure(state="readonly")
         SHEdob.configure(state="readonly")
-        SHEcharges.configure(state="readonly")
-        SHEevidence.configure(state="readonly")
+        SHEcharges.configure(state="disabled")
+        SHEevidence.configure(state="disabled")
 
     def onEnter(event=None):
         warrantNumberSearch(warrantSearchName.get())
@@ -193,15 +193,15 @@ def WNSapp(passWID):
     #charges
     SHcharges = tk.Label(root, text="Charges")
     SHcharges.grid(row=5,column=0,pady=5,padx=2,sticky="e")
-    SHEcharges = tk.Entry(root, width=50)
-    SHEcharges.configure(state="readonly")
-    SHEcharges.grid(row=5,column=1,pady=5,padx=2,columnspan=3,sticky="w")
+    SHEcharges = tk.Text(root, height=2, width=50, bg='#f0f0f0', font=("TkDefaultFont", 8),wrap=tk.WORD)
+    SHEcharges.configure(state="disabled")
+    SHEcharges.grid(row=5,column=1,columnspan=3,sticky="w")
     #evidence
     SHevidence = tk.Label(root, text="Evidence")
     SHevidence.grid(row=6,column=0,pady=5,padx=2,sticky="e")
-    SHEevidence = tk.Entry(root, width=50)
-    SHEevidence.configure(state="readonly")
-    SHEevidence.grid(row=6,column=1,pady=5,padx=2,ipady=9,columnspan=3,sticky="w")
+    SHEevidence = tk.Text(root, height=4, width=50, bg='#f0f0f0', font=("TkDefaultFont", 8),wrap=tk.WORD)
+    SHEevidence.configure(state="disabled")
+    SHEevidence.grid(row=6,column=1,columnspan=3,sticky="w")
 
     #warrant type
     varStatus = tk.StringVar()
