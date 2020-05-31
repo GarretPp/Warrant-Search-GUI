@@ -35,7 +35,7 @@ ws = gc.open_by_key("1vQkJ5C-zwRKselKz5_C2HPBezMKAP0EbWwWgnzEX9EY").sheet1
 ## Warrant Search GUI
 ## Created by Garret P. (#14308)
 ##
-version = "0.2b"
+version = "0.3b"
 versionText = ("Created by Garret P. (#14308) | Version %s" % version)
 #############
 def refresh(buttonCheck):
@@ -63,6 +63,7 @@ def refresh(buttonCheck):
     WSdepartment = ws.col_values(12)
     global WSofficer
     WSofficer = ws.col_values(13)
+    searchResults.delete(*searchResults.get_children())
     ## forces name to uppercase to search case-insensitive
     WScivName = [x.upper() for x in WScivName]
     if(buttonCheck):
@@ -75,16 +76,19 @@ def showWarrants():
     RRL = []
     for i in range(len(WScivName)):
         if  (warrantSearchName.get().upper() in WScivName[i]):
-            if (WSstatus[i] == "Approved"):
+            if (statusBoxVar.get() == 0):
+                if(WSstatus[i] == "Approved" ):
+                    RRL.append(i)
+            else:
                 RRL.append(i)
     tempList = []
-    #('Number','Type','Civ','Name','DOB','Charges','Department')
+    #('Number','Type','Civ','Name','DOB','Charges','Department','Status')
     for i in RRL:
-        tempList.append([WSwarrantNumber[i],WStype[i],WSoocCiv[i],WScivName[i],WSdob[i],WScharges[i],WSdepartment[i]])
+        tempList.append([WSwarrantNumber[i],WStype[i],WSoocCiv[i],WScivName[i],WSdob[i],WScharges[i],WSdepartment[i],WSstatus[i]])
     if(len(RRL)==0):
-        tempList.append(['####','####','No Name','/No Active','####','####','####'])
-    for (wrNumber,wrType,wrCiv,wrName,wrDOB,wrCharges,wrDepartment) in tempList:
-        searchResults.insert("", "end", values=(wrNumber,wrType,wrCiv,wrName,wrDOB,wrCharges,wrDepartment))
+        tempList.append(['####','####','No Name','/No Active','####','####','####','####'])
+    for (wrNumber,wrType,wrCiv,wrName,wrDOB,wrCharges,wrDepartment,wrStatus) in tempList:
+        searchResults.insert("", "end", values=(wrNumber,wrType,wrCiv,wrName,wrDOB,wrCharges,wrDepartment,wrStatus))
 
 
 ####################
@@ -212,7 +216,7 @@ def onEnter(event=None):
 
 main = tk.Tk()
 main.resizable(0,0)
-main.wm_title("Active Arrest Warrant Search")
+main.wm_title("JS-BWAU\nArrest Warrant Search")
 
 main.bind('<Return>',onEnter)
 
@@ -240,7 +244,7 @@ refreshBut = tk.Button(main,bd=1,text="⟳",width=2,height=0,font=("Georgia",14)
 refreshBut.grid(row=1,column=4)
 
 
-warrantItems = ('Number','Type','Civ','Name','DOB','Charges','Department')
+warrantItems = ('Number','Type','Civ','Name','DOB','Charges','Department','Status')
 searchResults = ttk.Treeview(main,columns=warrantItems, show='headings')
 for col in warrantItems:
     searchResults.heading(col, text=col)
@@ -251,11 +255,17 @@ searchResults.column("Name",minwidth=0,width=130)
 searchResults.column("DOB",minwidth=0,width=60)
 searchResults.column("Charges",minwidth=0,width=200)
 searchResults.column("Department",minwidth=0,width=80)
+searchResults.column("Status",minwidth=0,width=80)
 searchResults.grid(row=2,column=0,columnspan=5,padx=6)
 
 #Label for ver and creds at bottom
 versionLabel = tk.Label(main, text=versionText, font=("Verdana", 8))
 versionLabel.grid(row=3,column=2,columnspan=3,sticky="e")
+
+#Toggle all status
+statusBoxVar = tk.IntVar()
+toggleStatus = tk.Checkbutton(main, text="Show all warrant types.",variable=statusBoxVar)
+toggleStatus.grid(row=3,column=0,columnspan=2,sticky="w")
 
 #User cannot resize columns with this code
 def handle_click(event):
